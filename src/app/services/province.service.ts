@@ -11,4 +11,9 @@ export class ProvinceService {
   public save(data: any) {
     return this.http.post<Province>(baseUrl, data);
   }
+
+  public saveAll(data: any[]) {
+    return this.http.post<Province[]>(baseUrl+"/list", data);
+  }
+
 }

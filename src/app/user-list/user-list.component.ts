@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { District } from '../models/district';
 import { Province } from '../models/province';
 import { User } from '../models/user';
@@ -18,8 +20,14 @@ export class UserListComponent implements OnInit {
   Districts?: District[];
   Wards?: Ward[];
   keyword = '';
+  basicSelectedOption: number = 5;
+  p: any = 1;
+  
+  
+  displayedColumns: string[] = ['id', 'fullname', 'email', 'gender', 'dob', 'phone', 'address'];
+  dataSource!: MatTableDataSource<User>;
 
-
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(private userService: UserService) {
   }
 
@@ -32,11 +40,12 @@ export class UserListComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.users = data;
-          console.log(data);
+          this.dataSource = new MatTableDataSource(this.users);
+          this.dataSource.paginator = this.paginator;
         },
         error: (e) => console.error(e)
       });
   }
 
-  
+
 }

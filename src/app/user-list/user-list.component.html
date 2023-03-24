@@ -1,13 +1,27 @@
-<div class="card my-5">
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="keyword" />
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button" (click)="searchUser()">
-        Search
-      </button>
+<div class="row">
+
+  <div class="col-12 mb-50">
+    <div class="col-12 d-flex justify-content-between align-items-center m-1">
+      <label class="d-flex align-items-center">Show&nbsp;
+        <select class="form-control" style="height: 100%;" [(ngModel)]="basicSelectedOption" (ngModelChange)="p=1">
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+        </select>
+        &nbsp;entries</label>
+
+      <div class="input-group mb-3 col-6 float-right">
+        <input type="text" class="form-control input-group-append" placeholder="Search User" [(ngModel)]="keyword" />
+        <div class="input-group-append">
+          <button class="btn btn-outline-primary" type="button" (click)="searchUser()">
+            Search
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="card-body">
+  <div class="col-12 mb-50">
     <table class="table table-bordered table-striped">
       <thead class="thead-dark">
         <tr>
@@ -22,7 +36,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of users">
+        <tr *ngFor="let user of users | paginate : { itemsPerPage: basicSelectedOption, currentPage: p }">
           <td>{{ user.id }}</td>
           <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
           <td>{{ user.fullname }}</td>
@@ -35,12 +49,11 @@
           </td>
           <td>
             <button routerLink="/users/{{ user.id }}" mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>
-            &nbsp;
             <button routerLink="/delete/{{ user.id }}" mat-icon-button color="warn"><mat-icon>delete</mat-icon></button>
           </td>
         </tr>
       </tbody>
     </table>
-    
+    <pagination-controls class="d-flex justify-content-end" (pageChange)="p = $event"></pagination-controls>
   </div>
 </div>

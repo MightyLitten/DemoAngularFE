@@ -41,9 +41,7 @@ export class UserFormComponent implements OnInit {
     district: '',
     ward: '',
   };
-  province?: Province;
-  district?: District;
-  ward?: Ward;
+  
   Provinces?: Province[];
   Districts?: District[];
   Wards?: Ward[];
@@ -58,7 +56,6 @@ export class UserFormComponent implements OnInit {
     this.form = this.formBuilder.group(
       {
         fullname: ['', Validators.required],
-        gender: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         dob: ['', [Validators.required]],
         phone: ['', [Validators.required, Validators.pattern("[0-9]{10}")]],
@@ -83,16 +80,53 @@ export class UserFormComponent implements OnInit {
 
   onSubmit(): void {
     this.submitted = true;
-
     if (this.form.invalid) {
       return;
     }
     this.saveUser();
-
+    this.saveProvince();
     console.log(JSON.stringify(this.form.value, null, 2));
+  }
+  saveProvince(){
+    this._FreeAPIService.getProvinceById(this.user.province).subscribe(data => { 
+      this.provinceService.save(data)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          
+        },
+        error: (e) => this.openDialog(e.message)
+      })
+      this.saveDistrict();
+     });
+  }
+  saveDistrict(){
+    this._FreeAPIService.getDistrictById(this.user.district).subscribe(data => { 
+      this.districtService.save(data)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (e) => console.log(e.message)
+      })
+      this.saveWard();
+     });
+  }
+  saveWard(){
+    this._FreeAPIService.getWardById(this.user.ward).subscribe(data => { 
+      this.wardService.save(data)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+        },
+        error: (e) => console.log(e.message)
+      })
+      
+     });
   }
 
   openDialog(msg: string) {
+    
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
         message: msg
@@ -115,39 +149,12 @@ export class UserFormComponent implements OnInit {
       ward: this.user.ward,
     };
 
-    this._FreeAPIService.getProvinceById(this.user.province).subscribe(data => { this.province = data });
-    this._FreeAPIService.getDistrictById(this.user.district).subscribe(data => { this.district = data });
-    this._FreeAPIService.getWardById(this.user.ward).subscribe(data => { this.ward = data });
-    console.log(this.province);
-    console.log(this.district);
-    console.log(this.ward);
-
-    this.provinceService.save(this.province)
-      .subscribe({
-        next: (res) => {
-          console.log(res)
-        },
-        error: (e) => this.openDialog(e.message)
-      })
-    this.districtService.save(this.district)
-      .subscribe({
-        next: (res) => {
-          console.log(res)
-        },
-        error: (e) => console.log(e.message)
-      })
-    this.wardService.save(this.ward)
-      .subscribe({
-        next: (res) => {
-          console.log(res)
-        },
-        error: (e) => console.log(e.message)
-      })
-
+    
+    
     this.userService.save(data)
       .subscribe({
         next: (res) => {
-          console.log(res);
+          console.log(data);
           this.submitted = true;
           this.gotoList();
         },

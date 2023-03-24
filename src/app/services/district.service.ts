@@ -11,4 +11,7 @@ export class DistrictService {
   public save(data: any) {
     return this.http.post<District>(baseUrl, data);
   }
+  public saveAll(data: any[]) {
+    return this.http.post<District[]>(baseUrl+"/list", data);
+  }
 }

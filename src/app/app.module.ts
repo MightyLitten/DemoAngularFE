@@ -11,10 +11,15 @@ import { DeleteComponent } from './delete/delete.component';
 import { ConfirmationDialog } from './confirmation-dialog/confirmation-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FreeAPIService } from './services/free-api.service';
+import { MatSortModule } from '@angular/material/sort';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -26,16 +31,21 @@ import { FreeAPIService } from './services/free-api.service';
     ConfirmationDialog,
   ],
   imports: [
-    BrowserModule,  
-    AppRoutingModule,  
-    FormsModule,  
-    ReactiveFormsModule,  
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
     MatPaginatorModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    MatTableModule,
+    MatSortModule,
+    BrowserAnimationsModule,
+    NgxPaginationModule,
+    MatRadioModule
   ],
   providers: [FreeAPIService],
   bootstrap: [AppComponent]

@@ -23,11 +23,16 @@
 
         <div class="form-group">
             <label for="gender">Gender:</label>
-            <select class="form-control" id="gender" [(ngModel)]="user.gender" formControlName="gender"
+            <!-- <select class="form-control" id="gender" [(ngModel)]="user.gender" formControlName="gender"
                 name="gender" [ngClass]="{ 'is-invalid': submitted && f['gender'].errors }">
                 <option [value]="false" selected>Male</option>
                 <option [value]="true">Female</option>
-            </select>
+            </select> -->
+            <mat-radio-group class="smallRadio" aria-label="Select an option" formControlName="gender"
+                    [(ngModel)]="user.gender">
+                    <mat-radio-button [value]="false" checked="checked">Male</mat-radio-button>
+                    <mat-radio-button [value]="true">Female</mat-radio-button>
+                </mat-radio-group>
             <div *ngIf="f['gender'].errors" class="invalid-feedback">
                 <div *ngIf="f['gender'].errors && f['gender'].errors['required']">Gender is required</div>
             </div>
@@ -65,7 +70,7 @@
                 <option *ngFor="let province of Provinces" value="{{province.code}}">{{province.name}}</option>
             </select>
             <div *ngIf="submitted && f['province'].errors" class="invalid-feedback">
-                <div *ngIf="f['province'].errors['required']">Phone is required</div>
+                <div *ngIf="f['province'].errors['required']">Province is required</div>
                 <div *ngIf="f['province'].errors && f['province'].errors['pattern']">Province is invalid</div>
             </div>
         </div>
@@ -80,7 +85,7 @@
                 </ng-container>
             </select>
             <div *ngIf="submitted && f['district'].errors" class="invalid-feedback">
-                <div *ngIf="f['district'].errors['required']">Phone is required</div>
+                <div *ngIf="f['district'].errors['required']">Province is required</div>
                 <div *ngIf="f['district'].errors && f['district'].errors['pattern']">District is invalid</div>
             </div>
         </div>

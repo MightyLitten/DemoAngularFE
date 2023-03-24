@@ -110,7 +110,6 @@ export class EditUserComponent implements OnInit {
       })
       });
     this._FreeAPIService.getDistrictById(this.user.district).subscribe(data => { 
-      console.log(data);
       this.districtService.save(data)
       .subscribe({
         next: (res) => {
@@ -120,7 +119,6 @@ export class EditUserComponent implements OnInit {
       })
      });
     this._FreeAPIService.getWardById(this.user.ward).subscribe(data => {
-      console.log(data); 
       this.wardService.save(data)
       .subscribe({
         next: (res) => {

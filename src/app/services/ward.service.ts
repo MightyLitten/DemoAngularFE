@@ -11,4 +11,8 @@ export class WardService {
   public save(data: any) {
     return this.http.post<Ward>(baseUrl, data);
   }
+
+  public saveAll(data: any[]) {
+    return this.http.post<Ward[]>(baseUrl+"/list", data);
+  }
 }
