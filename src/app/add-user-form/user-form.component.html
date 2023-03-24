@@ -4,9 +4,8 @@
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="text" class="form-control" id="email" [(ngModel)]="user.email"
-                formControlName="email" name="email" 
-                    [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
+                <input type="text" class="form-control" id="email" [(ngModel)]="user.email" formControlName="email"
+                    name="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
                 <div *ngIf="f['email'].errors" class="invalid-feedback">
                     <div *ngIf="f['email'].errors && f['email'].errors['required']">Email is required</div>
                     <div *ngIf="f['email'].errors && f['email'].errors['email']">Email is invalid</div>
@@ -15,30 +14,30 @@
 
             <div class="form-group">
                 <label for="fullname">Full Name:</label>
-                <input class="form-control" id="fullname" [(ngModel)]="user.fullname"
-                formControlName="fullname" name="fullname"
-                    [ngClass]="{ 'is-invalid': submitted && f['fullname'].errors }" />
+                <input class="form-control" id="fullname" [(ngModel)]="user.fullname" formControlName="fullname"
+                    name="fullname" [ngClass]="{ 'is-invalid': submitted && f['fullname'].errors }" />
                 <div *ngIf="f['fullname'].errors" class="invalid-feedback">
                     <div *ngIf="f['fullname'].errors && f['fullname'].errors['required']">Fullname is required</div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="gender">Gender:</label>
-                <select class="form-control" id="gender" [(ngModel)]="user.gender" formControlName="gender"
+                <label for="gender">Gender:</label>&nbsp;
+                <!-- <select class="form-control" id="gender" [(ngModel)]="user.gender" formControlName="gender"
                     name="gender" [ngClass]="{ 'is-invalid': submitted && f['gender'].errors }">
                     <option [value]="false" selected>Male</option>
                     <option [value]="true">Female</option>
-                </select>
-                <div *ngIf="f['gender'].errors" class="invalid-feedback">
-                    <div *ngIf="f['gender'].errors && f['gender'].errors['required']">Gender is required</div>
-                </div>
+                </select> -->
+                <mat-radio-group class="smallRadio" aria-label="Select an option" formControlName="gender"
+                    [(ngModel)]="user.gender">
+                    <mat-radio-button [value]="false" checked="checked">Male</mat-radio-button>
+                    <mat-radio-button [value]="true">Female</mat-radio-button>
+                </mat-radio-group>
             </div>
 
             <div class="form-group">
                 <label for="dob">Date of Birth:</label>
-                <input class="form-control" id="dob" type="date" [(ngModel)]="user.dob"
-                     name="dob" formControlName="dob"
+                <input class="form-control" id="dob" type="date" [(ngModel)]="user.dob" name="dob" formControlName="dob"
                     [ngClass]="{ 'is-invalid': submitted && f['dob'].errors }" />
                 <div *ngIf="f['dob'].errors" class="invalid-feedback">
                     <div *ngIf="f['dob'].errors && f['dob'].errors['required']">Date of Birth is required</div>
@@ -47,8 +46,8 @@
 
             <div class="form-group">
                 <label for="phone">Phone:</label>
-                <input class="form-control" id="phone" [(ngModel)]="user.phone" formControlName="phone"
-                    name="phone" [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }" />
+                <input class="form-control" id="phone" [(ngModel)]="user.phone" formControlName="phone" name="phone"
+                    [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }" />
                 <div *ngIf="submitted && f['phone'].errors" class="invalid-feedback">
                     <div *ngIf="f['phone'].errors['required']">Phone is required</div>
                     <div *ngIf="f['phone'].errors && f['phone'].errors['pattern']">Phone is invalid</div>
@@ -61,8 +60,8 @@
 
             <div class="form-group">
                 <label for="province">Province:</label>
-                <select class="form-control" id="province" [(ngModel)]="user.province"
-                formControlName="province" [ngClass]="{ 'is-invalid': submitted && f['province'].errors }">
+                <select class="form-control" id="province" [(ngModel)]="user.province" formControlName="province"
+                    [ngClass]="{ 'is-invalid': submitted && f['province'].errors }">
                     <option value="0" selected disabled>Select Province</option>
                     <option *ngFor="let province of Provinces" value="{{province.code}}">{{province.name}}</option>
                 </select>
@@ -74,11 +73,12 @@
 
             <div class="form-group">
                 <label for="district">District:</label>
-                <select class="form-control" id="district" [(ngModel)]="user.district"
-                formControlName="district" [ngClass]="{ 'is-invalid': submitted && f['district'].errors }">
+                <select class="form-control" id="district" [(ngModel)]="user.district" formControlName="district"
+                    [ngClass]="{ 'is-invalid': submitted && f['district'].errors }">
                     <option value="0" selected disabled>Select District</option>
                     <ng-container *ngFor="let district of Districts">
-                        <option *ngIf="district.province_code == user.province" value="{{district.code}}">{{district.name}}</option>
+                        <option *ngIf="district.province_code == user.province" value="{{district.code}}">
+                            {{district.name}}</option>
                     </ng-container>
                 </select>
                 <div *ngIf="submitted && f['district'].errors" class="invalid-feedback">
@@ -88,8 +88,8 @@
             </div>
             <div class="form-group">
                 <label for="ward">Ward:</label>
-                <select class="form-control" id="ward" [(ngModel)]="user.ward"
-                formControlName="ward" [ngClass]="{ 'is-invalid': submitted && f['ward'].errors }">
+                <select class="form-control" id="ward" [(ngModel)]="user.ward" formControlName="ward"
+                    [ngClass]="{ 'is-invalid': submitted && f['ward'].errors }">
                     <option value="0" selected disabled>Select Ward</option>
                     <ng-container *ngFor="let ward of Wards">
                         <option *ngIf="ward.district_code == user.district" value="{{ward.code}}">{{ward.name}}</option>
