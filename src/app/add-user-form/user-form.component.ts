@@ -41,7 +41,8 @@ export class UserFormComponent implements OnInit {
     district: '',
     ward: '',
   };
-  
+  selectedProvince?: Province;
+  selectedDistrict?: District;
   Provinces?: Province[];
   Districts?: District[];
   Wards?: Ward[];
@@ -58,6 +59,7 @@ export class UserFormComponent implements OnInit {
         fullname: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         dob: ['', [Validators.required]],
+        gender: ['', [Validators.required]],
         phone: ['', [Validators.required, Validators.pattern("[0-9]{10}")]],
         province: ['', [Validators.required, Validators.pattern("[1-9][0-9]*")]],
         district: ['', [Validators.required, Validators.pattern("[1-9][0-9]*")]],
@@ -69,13 +71,34 @@ export class UserFormComponent implements OnInit {
     this.user.district = 0;
     this.user.ward = 0;
     this._FreeAPIService.getProvince().subscribe(data => { this.Provinces = data });
-    this._FreeAPIService.getDistrict().subscribe(data => { this.Districts = data });
-    this._FreeAPIService.getWard().subscribe(data => { this.Wards = data });
+    // this._FreeAPIService.getDistrict().subscribe(data => { this.Districts = data });
+    // this._FreeAPIService.getWard().subscribe(data => { this.Wards = data });
   }
 
 
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
+  }
+
+  getDistrict(){
+    this.user.district=0;
+    this.user.ward=0;
+    this._FreeAPIService.getProvinceByIdAndDistrictList(this.user.province).subscribe(
+      data =>{
+        this.selectedProvince = data;
+        this.Districts = this.selectedProvince?.districts;
+      },
+    )
+  }
+
+  getWard(){
+    this.user.ward=0;
+    this._FreeAPIService.getDistrictByIdAndWardList(this.user.district).subscribe(
+      data =>{
+        this.selectedDistrict = data;
+        this.Wards = this.selectedDistrict?.wards;
+      },
+    )
   }
 
   onSubmit(): void {

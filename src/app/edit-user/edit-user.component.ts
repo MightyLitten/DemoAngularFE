@@ -48,7 +48,8 @@ export class EditUserComponent implements OnInit {
   selectedProvince?: any;
   Districts?: District[];
   selectedDistrict?: any;
-  Wards?: Ward[];
+  Wards!: Ward[];
+  EmptyWards?: Ward[];
   selectedWard?: any;
   submitted = false;
 
@@ -71,14 +72,13 @@ export class EditUserComponent implements OnInit {
         ward: ['', [Validators.required]],
       },
     );
-    this._FreeAPIService.getProvince().subscribe(data => { this.Provinces = data });
-    this._FreeAPIService.getDistrict().subscribe(data => { this.Districts = data });
-    this._FreeAPIService.getWard().subscribe(data => { this.Wards = data });
+
     this.id = this.route.snapshot.params['id'];
     this.userService.get(this.id).subscribe(data => {
       this.user = data;
       console.log(this.user);
     });
+    this.getProvince();
   }
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
@@ -98,36 +98,73 @@ export class EditUserComponent implements OnInit {
       }
     });
   }
+  getProvince() {
+    this._FreeAPIService.getProvince().subscribe(data => { 
+      this.Provinces = data;
+      this.getDistrict();
+    });
+    
+  }
+
+  changeDistrict() {
+    this.user.district = 0;
+    this.user.ward = 0;
+  }
+
+  getDistrict() {
+    this._FreeAPIService.getProvinceByIdAndDistrictList(this.user.province).subscribe(
+      data => {
+        this.selectedProvince = data;
+        this.Districts = this.selectedProvince?.districts;
+        this.Wards = [];
+        this.Wards.length = 0;
+        this.getWard();
+      },
+    )
+  }
+
+  changeWard() {
+    this.user.ward = 0;
+  }
+
+  getWard() {
+    this._FreeAPIService.getDistrictByIdAndWardList(this.user.district).subscribe(
+      data => {
+        this.selectedDistrict = data;
+        this.Wards = this.selectedDistrict?.wards;
+      },
+    )
+  }
 
   updateUser() {
     this._FreeAPIService.getProvinceById(this.user.province).subscribe(data => {
-       this.provinceService.save(data)
-      .subscribe({
-        next: (res) => {
-          console.log(res)
-        },
-        error: (e) => console.log(e)
-      })
-      });
-    this._FreeAPIService.getDistrictById(this.user.district).subscribe(data => { 
+      this.provinceService.save(data)
+        .subscribe({
+          next: (res) => {
+            console.log(res)
+          },
+          error: (e) => console.log(e)
+        })
+    });
+    this._FreeAPIService.getDistrictById(this.user.district).subscribe(data => {
       this.districtService.save(data)
-      .subscribe({
-        next: (res) => {
-          console.log(res)
-        },
-        error: (e) => console.log(e)
-      })
-     });
+        .subscribe({
+          next: (res) => {
+            console.log(res)
+          },
+          error: (e) => console.log(e)
+        })
+    });
     this._FreeAPIService.getWardById(this.user.ward).subscribe(data => {
       this.wardService.save(data)
-      .subscribe({
-        next: (res) => {
-          console.log(res)
-        },
-        error: (e) => console.log(e)
-      }) 
+        .subscribe({
+          next: (res) => {
+            console.log(res)
+          },
+          error: (e) => console.log(e)
+        })
     });
-    
+
 
     this.submitted = true;
     if (this.form.invalid) {

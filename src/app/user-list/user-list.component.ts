@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Component, OnInit} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { ConfirmationDialog } from '../confirmation-dialog/confirmation-dialog.component';
 import { District } from '../models/district';
 import { Province } from '../models/province';
 import { User } from '../models/user';
@@ -22,13 +24,14 @@ export class UserListComponent implements OnInit {
   keyword = '';
   basicSelectedOption: number = 5;
   p: any = 1;
+  province?: Province;
+  id?: any;
   
   
   displayedColumns: string[] = ['id', 'fullname', 'email', 'gender', 'dob', 'phone', 'address'];
   dataSource!: MatTableDataSource<User>;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private dialog: MatDialog, private router: Router) {
   }
 
   ngOnInit() {
@@ -40,12 +43,40 @@ export class UserListComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.users = data;
-          this.dataSource = new MatTableDataSource(this.users);
-          this.dataSource.paginator = this.paginator;
         },
         error: (e) => console.error(e)
       });
   }
 
+  deleteUser(id: any){
+    this.userService.delete(id)
+    .subscribe({
+      next: (res) =>{
+        console.log(res);
+        this.searchUser();
+      },
+      error: (e) => console.error(e)
+    }
+    )
+  }
+
+  delete(id: any){
+    this.id = id;
+    this.openDialog();
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(ConfirmationDialog,{
+    data:{
+        message: 'Do you want to delete this user?'
+    }
+    });
+     
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+            this.deleteUser(this.id);
+        }
+    });
+  }
 
 }

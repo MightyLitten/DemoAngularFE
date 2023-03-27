@@ -7,7 +7,6 @@ import { UserListComponent } from './user-list/user-list.component';
 import { UserFormComponent } from './add-user-form/user-form.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EditUserComponent } from './edit-user/edit-user.component';
-import { DeleteComponent } from './delete/delete.component';
 import { ConfirmationDialog } from './confirmation-dialog/confirmation-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,7 +26,6 @@ import { MatRadioModule } from '@angular/material/radio';
     UserListComponent,
     UserFormComponent,
     EditUserComponent,
-    DeleteComponent,
     ConfirmationDialog,
   ],
   imports: [

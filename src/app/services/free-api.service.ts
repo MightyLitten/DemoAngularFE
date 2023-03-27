@@ -16,12 +16,22 @@ export class FreeAPIService {
     return this.http.get("https://provinces.open-api.vn/api/p/"+id);
   }
 
+  getProvinceByIdAndDistrictList(id: any): Observable<any>{
+    let param = new HttpParams().set('depth',2);
+    return this.http.get("https://provinces.open-api.vn/api/p/"+id+"/",{params:param});
+  }
+
   getDistrict(): Observable<any>{
     return this.http.get("https://provinces.open-api.vn/api/d/");
   }
 
   getDistrictById(id: any): Observable<any>{
     return this.http.get("https://provinces.open-api.vn/api/d/"+id);
+  }
+
+  getDistrictByIdAndWardList(id: any): Observable<any>{
+    let param = new HttpParams().set('depth',2);
+    return this.http.get("https://provinces.open-api.vn/api/d/"+id+"/",{params:param});
   }
 
   getWard(): Observable<any>{
