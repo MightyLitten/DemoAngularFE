@@ -60,8 +60,7 @@
         <div class="form-group">
             <label for="province">Province:</label>
             <select class="form-control" id="province" [(ngModel)]="user.province" formControlName="province"
-                [ngClass]="{ 'is-invalid': submitted && f['province'].errors}" (ngModelChange)="getDistrict()"
-                (change)="changeDistrict()">
+                [ngClass]="{ 'is-invalid': submitted && f['province'].errors}" (change)="getDistrict()">
                 <option value="0" selected disabled>Select Province</option>
                 <option *ngFor="let province of Provinces" value="{{province.code}}">{{province.name}}</option>
             </select>
@@ -74,8 +73,7 @@
         <div class="form-group">
             <label for="district">District:</label>
             <select class="form-control" id="district" [(ngModel)]="user.district" formControlName="district"
-                [ngClass]="{ 'is-invalid': submitted && f['district'].errors }" (ngModelChange)="getWard()"
-                (change)="changeWard()">
+                [ngClass]="{ 'is-invalid': submitted && f['district'].errors }" (change)="getWard()">
                 <option value="0" selected disabled>Select District</option>
                 <option *ngFor="let district of Districts" value="{{district.code}}">{{district.name}}</option>
             </select>

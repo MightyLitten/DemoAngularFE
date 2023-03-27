@@ -52,8 +52,10 @@ export class EditUserComponent implements OnInit {
   EmptyWards?: Ward[];
   selectedWard?: any;
   submitted = false;
-
+  currentProvince?: any;
+  currentDistrict?: any;
   message = '';
+
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService,
     private dialog: MatDialog, private formBuilder: FormBuilder, private _FreeAPIService: FreeAPIService,
@@ -74,14 +76,20 @@ export class EditUserComponent implements OnInit {
     );
 
     this.id = this.route.snapshot.params['id'];
-    this.userService.get(this.id).subscribe(data => {
-      this.user = data;
-      console.log(this.user);
-    });
+    this.getUser();
     this.getProvince();
   }
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
+  }
+
+  getUser() {
+    this.userService.get(this.id).subscribe(data => {
+      this.user = data;
+      this.currentProvince = this.user.province;
+      this.currentDistrict = this.user.district;
+      console.log(this.user);
+    });
   }
 
 
@@ -98,36 +106,34 @@ export class EditUserComponent implements OnInit {
       }
     });
   }
+
   getProvince() {
-    this._FreeAPIService.getProvince().subscribe(data => { 
+    this._FreeAPIService.getProvince().subscribe(data => {
       this.Provinces = data;
       this.getDistrict();
     });
-    
-  }
-
-  changeDistrict() {
-    this.user.district = 0;
-    this.user.ward = 0;
   }
 
   getDistrict() {
+    if(this.user.province != this.currentProvince){
+      this.user.district = 0;
+      this.user.ward = 0;
+      this.currentProvince = this.user.province;
+    }
     this._FreeAPIService.getProvinceByIdAndDistrictList(this.user.province).subscribe(
       data => {
         this.selectedProvince = data;
         this.Districts = this.selectedProvince?.districts;
-        this.Wards = [];
-        this.Wards.length = 0;
         this.getWard();
       },
     )
   }
 
-  changeWard() {
-    this.user.ward = 0;
-  }
-
   getWard() {
+    if(this.user.district != this.currentDistrict){
+      this.user.ward = 0;
+      this.currentDistrict = this.user.district;
+    }
     this._FreeAPIService.getDistrictByIdAndWardList(this.user.district).subscribe(
       data => {
         this.selectedDistrict = data;
