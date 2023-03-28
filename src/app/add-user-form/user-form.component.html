@@ -66,8 +66,8 @@
                     <option *ngFor="let province of Provinces" value="{{province.code}}">{{province.name}}</option>
                 </select>
                 <div *ngIf="submitted && f['province'].errors" class="invalid-feedback">
-                    <div *ngIf="f['province'].errors['required']">Phone is required</div>
-                    <div *ngIf="f['province'].errors && f['province'].errors['pattern']">Province is invalid</div>
+                    <div *ngIf="f['province'].errors['required']">Province is required</div>
+                    <div *ngIf="f['province'].errors && f['province'].errors['pattern']">Province is required</div>
                 </div>
             </div>
 
@@ -79,11 +79,11 @@
                     <option *ngFor="let district of Districts" value="{{district.code}}">{{district.name}}</option>
                 </select>
                 <div *ngIf="submitted && f['district'].errors" class="invalid-feedback">
-                    <div *ngIf="f['district'].errors['required']">Phone is required</div>
-                    <div *ngIf="f['district'].errors && f['district'].errors['pattern']">District is invalid</div>
+                    <div *ngIf="f['district'].errors['required']">District is required</div>
+                    <div *ngIf="f['district'].errors && f['district'].errors['pattern']">District is required</div>
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <label for="ward">Ward:</label>
                 <select class="form-control" id="ward" [(ngModel)]="user.ward" formControlName="ward"
@@ -94,8 +94,8 @@
                     </ng-container>
                 </select>
                 <div *ngIf="submitted && f['ward'].errors" class="invalid-feedback">
-                    <div *ngIf="f['ward'].errors['required']">Phone is required</div>
-                    <div *ngIf="f['ward'].errors && f['ward'].errors['pattern']">Ward is invalid</div>
+                    <div *ngIf="f['ward'].errors['required']">Ward is required</div>
+                    <div *ngIf="f['ward'].errors && f['ward'].errors['pattern']">Ward is required</div>
                 </div>
             </div>
             <button type="submit" class="btn btn-success">Submit</button>
