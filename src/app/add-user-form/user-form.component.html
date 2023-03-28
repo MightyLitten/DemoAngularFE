@@ -83,6 +83,7 @@
                     <div *ngIf="f['district'].errors && f['district'].errors['pattern']">District is invalid</div>
                 </div>
             </div>
+            
             <div class="form-group">
                 <label for="ward">Ward:</label>
                 <select class="form-control" id="ward" [(ngModel)]="user.ward" formControlName="ward"
@@ -97,7 +98,6 @@
                     <div *ngIf="f['ward'].errors && f['ward'].errors['pattern']">Ward is invalid</div>
                 </div>
             </div>
-
             <button type="submit" class="btn btn-success">Submit</button>
         </form>
     </div>
