@@ -51,7 +51,7 @@ export class UserFormComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService,
     private formBuilder: FormBuilder, private dialog: MatDialog, private _FreeAPIService: FreeAPIService,
-    private provinceService: ProvinceService, private districtService: DistrictService, private wardService: WardService,) { }
+    private provinceService: ProvinceService, private districtService: DistrictService, private wardService: WardService) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group(
@@ -70,7 +70,7 @@ export class UserFormComponent implements OnInit {
     this.user.province = 0;
     this.user.district = 0;
     this.user.ward = 0;
-    this._FreeAPIService.getProvince().subscribe(data => { this.Provinces = data });
+    this.provinceService.getProvince().subscribe(data => { this.Provinces = data });
     // this._FreeAPIService.getDistrict().subscribe(data => { this.Districts = data });
     // this._FreeAPIService.getWard().subscribe(data => { this.Wards = data });
   }
@@ -83,7 +83,7 @@ export class UserFormComponent implements OnInit {
   getDistrict(){
     this.user.district=0;
     this.user.ward=0;
-    this._FreeAPIService.getProvinceByIdAndDistrictList(this.user.province).subscribe(
+    this.provinceService.getProvinceByIdAndDistrictList(this.user.province).subscribe(
       data =>{
         this.selectedProvince = data;
         this.Districts = this.selectedProvince?.districts;
@@ -93,7 +93,7 @@ export class UserFormComponent implements OnInit {
 
   getWard(){
     this.user.ward=0;
-    this._FreeAPIService.getDistrictByIdAndWardList(this.user.district).subscribe(
+    this.districtService.getDistrictByIdAndWardList(this.user.district).subscribe(
       data =>{
         this.selectedDistrict = data;
         this.Wards = this.selectedDistrict?.wards;
@@ -106,46 +106,8 @@ export class UserFormComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this.saveUser();
-    this.saveProvince();
+    
     console.log(JSON.stringify(this.form.value, null, 2));
-  }
-  saveProvince(){
-    this._FreeAPIService.getProvinceById(this.user.province).subscribe(data => { 
-      this.provinceService.save(data)
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-          
-        },
-        error: (e) => this.openDialog(e.message)
-      })
-      this.saveDistrict();
-     });
-  }
-  saveDistrict(){
-    this._FreeAPIService.getDistrictById(this.user.district).subscribe(data => { 
-      this.districtService.save(data)
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-        },
-        error: (e) => console.log(e.message)
-      })
-      this.saveWard();
-     });
-  }
-  saveWard(){
-    this._FreeAPIService.getWardById(this.user.ward).subscribe(data => { 
-      this.wardService.save(data)
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-        },
-        error: (e) => console.log(e.message)
-      })
-      
-     });
   }
 
   openDialog(msg: string) {

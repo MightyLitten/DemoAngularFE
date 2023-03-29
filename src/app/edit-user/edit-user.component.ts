@@ -77,7 +77,6 @@ export class EditUserComponent implements OnInit {
 
     this.id = this.route.snapshot.params['id'];
     this.getUser();
-    this.getProvince();
   }
   get f(): { [key: string]: AbstractControl } {
     return this.form.controls;
@@ -89,6 +88,7 @@ export class EditUserComponent implements OnInit {
       this.currentProvince = this.user.province;
       this.currentDistrict = this.user.district;
       console.log(this.user);
+      this.getProvince();
     });
   }
 
@@ -108,7 +108,7 @@ export class EditUserComponent implements OnInit {
   }
 
   getProvince() {
-    this._FreeAPIService.getProvince().subscribe(data => {
+    this.provinceService.getProvince().subscribe(data => {
       this.Provinces = data;
       this.getDistrict();
     });
@@ -120,7 +120,7 @@ export class EditUserComponent implements OnInit {
       this.user.ward = 0;
       this.currentProvince = this.user.province;
     }
-    this._FreeAPIService.getProvinceByIdAndDistrictList(this.user.province).subscribe(
+    this.provinceService.getProvinceByIdAndDistrictList(this.user.province).subscribe(
       data => {
         this.selectedProvince = data;
         this.Districts = this.selectedProvince?.districts;
@@ -134,7 +134,7 @@ export class EditUserComponent implements OnInit {
       this.user.ward = 0;
       this.currentDistrict = this.user.district;
     }
-    this._FreeAPIService.getDistrictByIdAndWardList(this.user.district).subscribe(
+    this.districtService.getDistrictByIdAndWardList(this.user.district).subscribe(
       data => {
         this.selectedDistrict = data;
         this.Wards = this.selectedDistrict?.wards;
@@ -143,7 +143,7 @@ export class EditUserComponent implements OnInit {
   }
 
   updateUser() {
-    this._FreeAPIService.getProvinceById(this.user.province).subscribe(data => {
+    this.provinceService.getProvinceById(this.user.province).subscribe(data => {
       this.provinceService.save(data)
         .subscribe({
           next: (res) => {
@@ -152,7 +152,7 @@ export class EditUserComponent implements OnInit {
           error: (e) => console.log(e)
         })
     });
-    this._FreeAPIService.getDistrictById(this.user.district).subscribe(data => {
+    this.districtService.getDistrictById(this.user.district).subscribe(data => {
       this.districtService.save(data)
         .subscribe({
           next: (res) => {
@@ -161,7 +161,7 @@ export class EditUserComponent implements OnInit {
           error: (e) => console.log(e)
         })
     });
-    this._FreeAPIService.getWardById(this.user.ward).subscribe(data => {
+    this.wardService.getWardById(this.user.ward).subscribe(data => {
       this.wardService.save(data)
         .subscribe({
           next: (res) => {
