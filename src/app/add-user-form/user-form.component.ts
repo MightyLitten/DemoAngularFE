@@ -106,7 +106,7 @@ export class UserFormComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    
+    this.saveUser();
     console.log(JSON.stringify(this.form.value, null, 2));
   }
 
